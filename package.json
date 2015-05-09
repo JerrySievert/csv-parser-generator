@@ -1,12 +1,25 @@
 {
   "name": "csv-parser-generator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generates CSV Parsers based on rules",
   "main": "index.js",
   "scripts": {
     "test": "gulp test"
   },
-  "author": "Jerry Sievert",
+  "keywords": [
+    "csv",
+    "parser",
+    "grammer",
+    "generator"
+  ],
+  "author": "Jerry Sievert <code@legitimatesounding.com> (http://legitimatesounding.com/blog/)",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/JerrySievert/csv-parser-generator.git"
+   },
+   "bugs": {
+     "url": "http://github.com/JerrySievert/date-utils/issues"
+  },
   "license": "ISC",
   "dependencies": {
     "jison": "^0.4.15"
