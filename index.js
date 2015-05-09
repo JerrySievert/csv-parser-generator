@@ -1,8 +1,8 @@
 var jison = require('jison');
 var fs = require('fs');
 
-var expressions = fs.readFileSync('./expressions', 'utf8');
-var rules_src = fs.readFileSync('./rules', 'utf8');
+var expressions = fs.readFileSync(__dirname + '/expressions', 'utf8');
+var rules_src = fs.readFileSync(__dirname + '/rules', 'utf8');
 
 var rules = rules_src.split("\n");
 
