@@ -1,0 +1,21 @@
+{
+  "name": "csv-parser-generator",
+  "version": "1.0.0",
+  "description": "Generates CSV Parsers based on rules",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "author": "Jerry Sievert",
+  "license": "ISC",
+  "dependencies": {
+    "jison": "^0.4.15"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-jshint": "^1.10.0",
+    "gulp-shell": "^0.4.1",
+    "jshint-stylish": "^1.0.2",
+    "tape": "^4.0.0"
+  }
+}

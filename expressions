@@ -1,0 +1,23 @@
+%start expressions
+
+%% /* language grammar */
+
+expressions
+    : parser EOF
+        { return $1; }
+    ;
+
+parser
+    : QUOTED
+        { $$ = [ $1.slice(1, -1) ]; }
+    | SINGLEQUOTED
+        { $$ = [ $1.slice(1, -1) ]; }
+    | UNQUOTED
+        { $$ = [ $1 ] }
+    | QUOTED DELIMITER parser
+        { $3.unshift($1.slice(1, -1)); $$ = $3; }
+    | SINGLEQUOTED DELIMITER parser
+        { $3.unshift($1.slice(1, -1)); $$ = $3; }
+    | UNQUOTED DELIMITER parser
+        { $3.unshift($1); $$ = $3; }
+    ;
