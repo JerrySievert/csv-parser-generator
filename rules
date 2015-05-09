@@ -1,5 +1,2 @@
-\"(?:[^"\\]|\\.)*\"           return 'QUOTED'
-\'(?:[^'\\]|\\.)*\'           return 'SINGLEQUOTED'
-\w+                           return 'UNQUOTED'
-<<EOF>>                       return 'EOF'
-.                             return "INVALID"
+\"(?:[^"\\]|\\.)*\"           return "QUOTED"
+\'(?:[^'\\]|\\.)*\'           return "SINGLEQUOTED"
