@@ -17,13 +17,13 @@ function parser (options) {
   if (options.delimiter.match(/\s+/)) {
     rules.unshift('\\s+ // ignore');
     rules.unshift('"' + options.delimiter + '" return "DELIMITER"');
-    rules.push('[a-zA-Z0-9\\-\\[\\]_:;]+             return "UNQUOTED"');
+    rules.push('[a-zA-Z0-9\\-\\[\\]_:;\\.]+             return "UNQUOTED"');
     rules.push('<<EOF>>                       return "EOF"');
     rules.push('.                             return "INVALID"');
   } else {
     rules.unshift('"' + options.delimiter + '"' + ' return "DELIMITER"');
     rules.unshift('\\s+ // ignore');
-    rules.push('[a-zA-Z0-9:;\\-\\[\\]_]+             return "UNQUOTED"');
+    rules.push('[a-zA-Z0-9:;\\-\\[\\]_\\.]+             return "UNQUOTED"');
     rules.push('<<EOF>>                       return "EOF"');
     rules.push('.                             return "INVALID"');
   }
