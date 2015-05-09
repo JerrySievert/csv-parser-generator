@@ -18,7 +18,7 @@
     "url": "http://github.com/JerrySievert/csv-parser-generator.git"
    },
    "bugs": {
-     "url": "http://github.com/JerrySievert/date-utils/issues"
+     "url": "http://github.com/JerrySievert/csv-parser-generator/issues"
   },
   "license": "ISC",
   "dependencies": {
