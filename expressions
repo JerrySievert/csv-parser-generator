@@ -7,6 +7,12 @@ expressions
         { return $1; }
     ;
 
+delimiter
+    : DELIMITER
+    | DELIMITER delimiter
+        { $$ = $1 }
+    ;
+
 parser
     : QUOTED
         { $$ = [ $1.slice(1, -1) ]; }
@@ -14,10 +20,10 @@ parser
         { $$ = [ $1.slice(1, -1) ]; }
     | UNQUOTED
         { $$ = [ $1 ] }
-    | QUOTED DELIMITER parser
+    | QUOTED delimiter parser
         { $3.unshift($1.slice(1, -1)); $$ = $3; }
-    | SINGLEQUOTED DELIMITER parser
+    | SINGLEQUOTED delimiter parser
         { $3.unshift($1.slice(1, -1)); $$ = $3; }
-    | UNQUOTED DELIMITER parser
+    | UNQUOTED delimiter parser
         { $3.unshift($1); $$ = $3; }
     ;
