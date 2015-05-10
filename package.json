@@ -1,6 +1,6 @@
 {
   "name": "csv-parser-generator",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "Generates CSV Parsers based on rules",
   "main": "index.js",
   "scripts": {

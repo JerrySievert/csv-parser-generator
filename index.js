@@ -2,9 +2,8 @@ var jison = require('jison');
 var fs = require('fs');
 
 var expressions = fs.readFileSync(__dirname + '/expressions', 'utf8');
-var rules_src = fs.readFileSync(__dirname + '/rules', 'utf8');
 
-var rules = rules_src.split("\n");
+var rules;
 
 function parser (options) {
   options = options || { };
@@ -15,17 +14,25 @@ function parser (options) {
 
 
   if (options.delimiter.match(/\s+/)) {
-    rules.unshift('\\s+ // ignore');
-    rules.unshift('"' + options.delimiter + '" return "DELIMITER"');
-    rules.push('[a-zA-Z0-9\\-\\[\\]_:;\\.\\(\\)=]+             return "UNQUOTED"');
-    rules.push('<<EOF>>                       return "EOF"');
-    rules.push('.                             return "INVALID"');
+    rules = [ ];
+    rules.push('"' + options.delimiter + '" return "DELIMITER"');
+    rules.push('\\s+ // ignore');
+    rules.push('\\"(?:[^"\\\\]|\\\\.)*\\"  return "QUOTED"');
+    rules.push("\\'(?:[^'\\\\]|\\\\.)*\\'  return 'UNQUOTED'");
+    rules.push('[^' + options.delimiter + ']+ return "UNQUOTED"');
+    rules.push('<<EOF>> return "EOF"');
+    rules.push('. return "INVALID"\n');
   } else {
-    rules.unshift('"' + options.delimiter + '"' + ' return "DELIMITER"');
-    rules.unshift('\\s+ // ignore');
-    rules.push('[a-zA-Z0-9:;\\-\\[\\]_\\.\\(\\)=]+             return "UNQUOTED"');
-    rules.push('<<EOF>>                       return "EOF"');
-    rules.push('.                             return "INVALID"');
+    rules = [ ];
+    if (options['strip-whitespace'] === true) {
+      rules.push('\\s+ // ignore');
+    }
+    rules.push('"' + options.delimiter + '" return "DELIMITER"');
+    rules.push('\\"(?:[^"\\\\]|\\\\.)*\\"  return "QUOTED"');
+    rules.push("\\'(?:[^'\\\\]|\\\\.)*\\'  return 'UNQUOTED'");
+    rules.push('[^' + options.delimiter + ']+ return "UNQUOTED"');
+    rules.push('<<EOF>> return "EOF"');
+    rules.push('. return "INVALID"\n');
   }
 
   var grammar = "%lex\n%%\n" + rules.join("\n") + "/lex" + expressions;
