@@ -3,9 +3,9 @@ var fs = require('fs');
 
 var expressions = fs.readFileSync(__dirname + '/expressions', 'utf8');
 
-var rules;
 
 function parser (options) {
+  var rules = [ ];
   options = options || { };
 
   if (options.delimiter === undefined) {
@@ -14,7 +14,6 @@ function parser (options) {
 
 
   if (options.delimiter.match(/\s+/)) {
-    rules = [ ];
     rules.push('"' + options.delimiter + '" return "DELIMITER"');
     rules.push('\\s+ // ignore');
     rules.push('\\"(?:[^"\\\\]|\\\\.)*\\"  return "QUOTED"');
@@ -23,7 +22,6 @@ function parser (options) {
     rules.push('<<EOF>> return "EOF"');
     rules.push('. return "INVALID"\n');
   } else {
-    rules = [ ];
     if (options['strip-whitespace'] === true) {
       rules.push('\\s+ // ignore');
     }
