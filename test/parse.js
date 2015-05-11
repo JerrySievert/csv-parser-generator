@@ -49,3 +49,14 @@ test('generator works when passed delimiter set to space', function (t) {
   t.equal(results[1], 'bar');
   t.equal(results[2], 'baz');
 });
+
+test('generator works when ignore-quotes is set to true', function (t) {
+  t.plan(3);
+
+  var parser = generator({ delimiter: " ", "ignore-quotes": true });
+  var results = parser.parse('"foo".baz bar');
+
+  t.equal(results.length, 2);
+  t.equal(results[0], '"foo".baz');
+  t.equal(results[1], 'bar');
+});
