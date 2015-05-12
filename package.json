@@ -1,6 +1,6 @@
 {
   "name": "csv-parser-generator",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Generates CSV Parsers based on rules",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   "keywords": [
     "csv",
     "parser",
-    "grammer",
+    "grammar",
     "generator"
   ],
   "author": "Jerry Sievert <code@legitimatesounding.com> (http://legitimatesounding.com/blog/)",
