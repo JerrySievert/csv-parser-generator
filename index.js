@@ -76,12 +76,12 @@ function parser (options) {
   var expressions = "%start expressions\n\n%%\n\nexpressions\n    : parser EOF\n        { return $1 }\n    ;\n\n";
 
   // delimiter work
-  var delimiter = "delimiter\n    : DELIMITER\n        { $$ = 1; }\n    | DELIMITER delimiter\n        { $$ = $2 + 1; }\n    ;\n\n";
+  var delimiter = "delimiter\n    : DELIMITER\n        { $$ = { delimiter: $1, count: 1 }; }\n    | DELIMITER delimiter\n        { $2.count++; $$ = $2; }\n    ;\n\n";
 
   // actual parser
   var parser;
   if (options['ignore-quotes'] === true) {
-    parser = "parser\n    : UNQUOTED\n        { $$ = [ $1 ]; }\n    | UNQUOTED delimiter parser\n        { $3.unshift($1); $$ = $3; }\n    ;\n\n";
+    parser = "parser\n    : UNQUOTED\n        { $$ = [ $1 ]; }\n    | UNQUOTED delimiter parser\n        { $3.unshift($1); if ($2.count > 1) { for (var i = 0; i < $2.count; i++) { $3.unshift($2.delimiter); } } $$ = $3; }\n    ;\n\n";
   } else {
     parser = 'parser\n    : QUOTED\n        { $$ = [ $1.slice(1, -1) ]; }\n    | SINGLEQUOTED\n        { $$ = [ $1.slice(1, -1) ]; }\n';
     parser += '    | UNQUOTED\n        { $$ = [ $1 ]; }\n    | QUOTED delimiter parser\n        { $3.unshift($1.slice(1, -1)); $$ = $3; }\n';
