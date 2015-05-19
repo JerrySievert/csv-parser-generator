@@ -81,11 +81,11 @@ function parser (options) {
   // actual parser
   var parser;
   if (options['ignore-quotes'] === true) {
-    parser = "parser\n    : UNQUOTED\n        { $$ = [ $1 ]; }\n    | UNQUOTED delimiter parser\n        { $3.unshift($1); if ($2.count > 1) { for (var i = 0; i < $2.count; i++) { $3.unshift($2.delimiter); } } $$ = $3; }\n    ;\n\n";
+    parser = "parser\n    : UNQUOTED\n        { $$ = [ $1 ]; }\n    | UNQUOTED delimiter parser\n        { if ($2.count > 1) { for (var i = 0; i < $2.count - 1; i++) { $3.unshift(''); } } $3.unshift($1); $$ = $3; }\n    ;\n\n";
   } else {
     parser = 'parser\n    : QUOTED\n        { $$ = [ $1.slice(1, -1) ]; }\n    | SINGLEQUOTED\n        { $$ = [ $1.slice(1, -1) ]; }\n';
-    parser += '    | UNQUOTED\n        { $$ = [ $1 ]; }\n    | QUOTED delimiter parser\n        { $3.unshift($1.slice(1, -1)); $$ = $3; }\n';
-    parser += '    | SINGLEQUOTED delimiter parser\n        { $3.unshift($1.slice(1, -1)); $$ = $3; }\n    | UNQUOTED delimiter parser\n        { $3.unshift($1); $$ = $3; }\n    ;\n\n';
+    parser += '    | UNQUOTED\n        { $$ = [ $1 ]; }\n    | QUOTED delimiter parser\n        { if ($2.count > 1) { for (var i = 0; i < $2.count - 1; i++) { $3.unshift(""); } } $3.unshift($1.slice(1, -1)); $$ = $3; }\n';
+    parser += '    | SINGLEQUOTED delimiter parser\n        { if ($2.count > 1) { for( var i = 0; i < $2.count - 1; i++) { $3.unshift(""); } } $3.unshift($1.slice(1, -1)); $$ = $3; }\n    | UNQUOTED delimiter parser\n        { if ($2.count > 1) { for (var i = 0; i < $2.count - 1; i++) { $3.unshift(""); } } $3.unshift($1); $$ = $3; }\n    ;\n\n';
   }
 
   var grammar = "%lex\n%%\n" + rules.join("\n") + "/lex\n\n" + expressions + delimiter + parser;
