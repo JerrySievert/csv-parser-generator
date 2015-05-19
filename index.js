@@ -51,8 +51,9 @@ function parser (options) {
 
   delimiter
       : DELIMITER
+          { $$ = 1; }
       | DELIMITER delimiter
-          { $$ = $1 }
+          { $$ = $2 + 1; }
       ;
 
   parser
@@ -61,7 +62,7 @@ function parser (options) {
       | SINGLEQUOTED
           { $$ = [ $1.slice(1, -1) ]; }
       | UNQUOTED
-          { $$ = [ $1 ] }
+          { $$ = [ $1 ]; }
       | QUOTED delimiter parser
           { $3.unshift($1.slice(1, -1)); $$ = $3; }
       | SINGLEQUOTED delimiter parser
@@ -75,7 +76,7 @@ function parser (options) {
   var expressions = "%start expressions\n\n%%\n\nexpressions\n    : parser EOF\n        { return $1 }\n    ;\n\n";
 
   // delimiter work
-  var delimiter = "delimiter\n    : DELIMITER\n    | DELIMITER delimiter\n        { $$ = $1 }\n    ;\n\n";
+  var delimiter = "delimiter\n    : DELIMITER\n        { $$ = 1; }\n    | DELIMITER delimiter\n        { $$ = $2 + 1; }\n    ;\n\n";
 
   // actual parser
   var parser;
