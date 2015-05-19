@@ -60,3 +60,16 @@ test('generator works when ignore-quotes is set to true', function (t) {
   t.equal(results[0], '"foo".baz');
   t.equal(results[1], 'bar');
 });
+
+test('generator works when blank fields are passed in', function (t) {
+  t.plan(4);
+
+  var parser = generator({ });
+  var results = parser.parse('foo,,bar');
+
+  t.equal(results.length, 3);
+  t.equal(results[0], 'foo');
+  t.equal(results[1], '');
+  t.equal(results[2], 'bar');
+});
+
